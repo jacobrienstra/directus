@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRef } from 'vue';
+import { defineComponent, toRef, watch, ref } from 'vue';
 import { useGroupable } from '@/composables/groupable';
 
 export default defineComponent({
@@ -94,13 +94,17 @@ export default defineComponent({
 	},
 	emits: ['click'],
 	setup(props, { emit }) {
-		// const initialActive = toRef(props, 'open');
-		const { active: groupActive, toggle } = useGroupable({
+		const initialActive = toRef(props, 'open');
+		const groupActive = ref(!!props.open);
+
+		const { active, toggle } = useGroupable({
 			group: props.scope,
 			value: props.value,
-			// active: initialActive,
-			// watch: true,
 		});
+
+		// update the group open either when "props.open" changes state or when manually toggled
+		watch(initialActive, (val) => (groupActive.value = val));
+		watch(active, (val) => (groupActive.value = val));
 
 		return { groupActive, toggle, onClick };
 
