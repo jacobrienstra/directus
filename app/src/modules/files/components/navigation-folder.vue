@@ -18,6 +18,7 @@
 			:to="`/files/folders/${folder.id}`"
 			:active="currentFolder === folder.id"
 			:value="folder.id"
+			:open="isOpen"
 			scope="files-navigation"
 			disable-groupable-parent
 		>
@@ -115,7 +116,7 @@
 
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, PropType, ref, computed } from 'vue';
 import useFolders, { Folder } from '@/composables/use-folders';
 import api from '@/api';
 import FolderPicker from '@/views/private/components/folder-picker/folder-picker.vue';
@@ -148,10 +149,15 @@ export default defineComponent({
 		const { moveActive, moveValue, moveSave, moveSaving } = useMoveFolder();
 		const { deleteActive, deleteSave, deleteSaving } = useDeleteFolder();
 
-		const { fetchFolders } = useFolders();
+		const { fetchFolders, openFolders } = useFolders();
+		const isOpen = computed(() => {
+			if (!props.folder?.id || !openFolders.value) return false;
+			return openFolders.value.includes(props.folder.id);
+		});
 
 		return {
 			t,
+			isOpen,
 			renameActive,
 			renameValue,
 			renameSave,
