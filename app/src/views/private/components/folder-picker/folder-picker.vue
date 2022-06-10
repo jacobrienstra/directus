@@ -7,7 +7,6 @@
 					disable-groupable-parent
 					clickable
 					:active="modelValue === null"
-					:open="true"
 					scope="folder-picker"
 					value="root"
 					@click="$emit('update:modelValue', null)"
