@@ -8,12 +8,17 @@ type Options = {
 	subject: string;
 	message?: unknown | null;
 	permissions: string; // $public, $trigger, $full, or UUID of a role
+	collection: string;
+	key: string;
 };
 
 export default defineOperationApi<Options>({
 	id: 'notification',
 
-	handler: async ({ recipient, subject, message, permissions }, { accountability, database, getSchema }) => {
+	handler: async (
+		{ recipient, subject, message, permissions, collection, key },
+		{ accountability, database, getSchema }
+	) => {
 		const schema = await getSchema({ database });
 		let customAccountability: Accountability | null;
 
@@ -41,6 +46,8 @@ export default defineOperationApi<Options>({
 				sender: customAccountability?.user ?? null,
 				subject,
 				message: messageString,
+				collection,
+				item: key,
 			};
 		});
 		const result = await notificationsService.createMany(payload);

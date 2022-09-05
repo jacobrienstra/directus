@@ -59,6 +59,27 @@ export default defineOperationApp({
 			},
 		},
 		{
+			field: 'collection',
+			name: '$t:collection',
+			type: 'string',
+			meta: {
+				width: 'half',
+				interface: 'system-collection',
+			},
+		},
+		{
+			field: 'key',
+			name: 'ID',
+			type: 'string',
+			meta: {
+				width: 'half',
+				interface: 'input',
+				options: {
+					iconRight: 'vpn_key',
+				},
+			},
+		},
+		{
 			field: 'subject',
 			name: '$t:title',
 			type: 'string',
